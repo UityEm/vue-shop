@@ -21,9 +21,11 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    // function参考括号前边没有“空格”也允许
+    "space-before-function-paren": ["error", "never"],
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'never'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
 }
