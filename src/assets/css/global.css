@@ -4,3 +4,10 @@ html,body,#app{
   margin: 0;
   padding: 0;
 }
+.el-submenu_title,
+.el-menu-item{
+  font-size: 13px;
+}
+i.iconfont{
+  margin-right: 10px;
+}
