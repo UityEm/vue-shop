@@ -3,7 +3,7 @@
     <!-- 头部部分 -->
   <el-header class="home-header">
     <div class="logo-box">
-      <img src="../assets/img/heima.png" alt="">
+      <img src="../../assets/img/heima.png" alt="">
       <span>电商后台管理系统</span>
     </div>
     <el-button type="info" @click="logout">退出</el-button>
@@ -31,6 +31,7 @@
         :style="menushow ? 'width:65px;' : 'width:200px'"
         :collapse="menushow"
         :collapse-transition="false"
+        :router="true"
         >
         <el-submenu
         :index="item.id + ''"
@@ -42,7 +43,7 @@
           </template>
           <el-menu-item-group>
           <el-menu-item
-          :index="item.id+'-'+item2.id"
+          :index="item2.path"
           v-for="item2 in item.children"
           :key="item2.id">
             <i class="el-icon-menu"></i>
