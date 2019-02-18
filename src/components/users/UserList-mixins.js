@@ -155,6 +155,58 @@ export default {
       }
     },
     // 修改用户信息
+    editUser(id) {
+      console.log(this.$refs)
+      this.$refs.editFormRef.validate(async valid => {
+        if (!valid) {
+          return null
+        }
+        const {data: res} = await this.$http.put('users/' + this.editForm.id, this.editForm)
+        if (res.meta.status !== 200) {
+          return this.$message({
+            message: '修改用户失败',
+            type: 'error',
+            duration: 1000
+          })
+        }
+        // 关闭弹层
+        this.editDialogVisible = false
+        // 页面刷新
+        this.getUserList()
+        // 清除Form表单信息
+        this.$refs.editFormRef.resetFields()
+        this.$message({
+          message: '修改用户成功',
+          type: 'success',
+          duration: 1000
+        })
+      })
+    },
+    // 展示修改用户弹层
+    async showEditDialog(id) {
+      const {data: res} = await this.$http.get('users/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message({
+          message: '获取用户信息失败',
+          type: 'error',
+          duration: 1000
+        })
+      }
+      this.editForm = res.data
+      this.editDialogVisible = true
+    },
+    // 修改用户弹层关闭前回调(自然关闭,点击页面其他地方)
+    editDialogCloseBefore(done) {
+      this.$refs.editFormRef.resetFields()
+      done()
+    },
+    // 点击 (取消) 按钮的回调
+    editDialogClose() {
+      //  验证结果
+      this.$refs.editFormRef.resetFields()
+      // 关闭弹框
+      this.editDialogVisible = false
+    },
     // 分页相关
     // 设定每页显示条数
     handleSizeChange(newSize) {

@@ -53,11 +53,11 @@
       </el-dialog>
       <!-- 修改用户遮罩层 -->
       <el-dialog
-        title="修改"
+        title="修改用户"
         :visible.sync="editDialogVisible"
         width="50%"
         top="185px"
-        :before-close="editDialogClose">
+        :before-close="editDialogCloseBefore">
         <!-- 修改用户自带验证表单域 -->
         <el-form
           :model="editForm"
@@ -69,9 +69,6 @@
           <el-form-item label="用户名" prop="username">
             <el-input v-model="editForm.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input v-model="editForm.password"></el-input>
-          </el-form-item>
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="editForm.email"></el-input>
           </el-form-item>
@@ -80,8 +77,8 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="editDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="editUser">确 定</el-button>
+          <el-button @click="editDialogClose">取 消</el-button>
+          <el-button type="primary"  @click="editUser()">确 定</el-button>
         </span>
       </el-dialog>
       <!-- 用户列表 -->
@@ -103,7 +100,7 @@
           <template slot-scope="scope">
             <el-tooltip placement="top" :enterable="false">
               <div slot="content">编辑角色</div>
-              <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
             </el-tooltip>
             <el-tooltip placement="top" :enterable="false">
               <div slot="content">删除角色</div>
