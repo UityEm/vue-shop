@@ -66,6 +66,19 @@ export default {
         mobile: [
           { validator: checkMobile, trigger: 'blur' }
         ]
+      },
+      // 分配角色遮罩层
+      fenpeiDialogVisible: false,
+      rolesInfo: [],
+      fenpeiForm: {
+        id: 0,
+        username: '',
+        rid: 0
+      },
+      fenpeiFormRules: {
+        usernam: [
+          { required: true, message: '请选择角色名称', trigger: 'change' }
+        ]
       }
     }
   },
@@ -90,7 +103,7 @@ export default {
       const {data: res} = await this.$http.get('users', {
         params: this.queryInfo
       })
-      console.log(res.data)
+      // console.log(res.data)
       if (res.meta.status !== 200) {
         return this.message.error('res.meta.msg')
       }
@@ -155,8 +168,7 @@ export default {
       }
     },
     // 修改用户信息
-    editUser(id) {
-      console.log(this.$refs)
+    editUser() {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) {
           return null
@@ -207,6 +219,43 @@ export default {
       // 关闭弹框
       this.editDialogVisible = false
     },
+    // 展示分配角色弹层
+    async showFenpeiDialog(id) {
+      const {data: res} = await this.$http.get('users/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      }
+      this.fenpeiForm = res.data
+      this.fenpeiDialogVisible = true
+      if (this.fenpeiForm.rid === 0) {
+        this.fenpeiForm.rid = ''
+      }
+      // 把提供分配的角色信息获得出来
+      const {data: res1} = await this.$http.get('roles')
+      if (res1.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      }
+      this.rolesInfo = res1.data
+    },
+    // 分配角色信息
+    fenpeiUser() {
+      this.$refs.fenpeiFormRef.validate(async valid => {
+        if (valid) {
+          const {data: res} = await this.$http.put('users/' + this.fenpeiForm.id + '/role', this.fenpeiForm)
+          if (res.meta.status !== 200) {
+            return this.$message.error(res.meta.msg)
+          }
+          // 关闭弹层
+          this.fenpeiDialogVisible = false
+          this.$message.success(res.meta.msg)
+          // 页面刷新
+          this.getUserList()
+        }
+      })
+    },
+    fenpeiDialogClose() {
+      this.$refs.fenpeiFormRef.resetFields()
+    },
     // 分页相关
     // 设定每页显示条数
     handleSizeChange(newSize) {
@@ -222,7 +271,7 @@ export default {
     addDialogClose(done) {
       //  验证结果
       this.$refs.addFormRef.resetFields()
-      // 关闭弹框
+      //  关闭弹框
       done()
     }
   }

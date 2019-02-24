@@ -1,7 +1,7 @@
 <template>
   <div class="user-container">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -81,14 +81,46 @@
           <el-button type="primary"  @click="editUser()">确 定</el-button>
         </span>
       </el-dialog>
+      <!-- 分配角色遮罩层 -->
+      <el-dialog
+        title="分配角色"
+        :visible.sync="fenpeiDialogVisible"
+        width="50%"
+        top="185px"
+        :before-close="fenpeiDialogCloseBefore">
+        <!-- 分配角色自带验证表单域 -->
+        <el-form
+          :model="fenpeiForm"
+          status-icon
+          :rules="fenpeiFormRules"
+          ref="fenpeiFormRef"
+          label-width="100px"
+          class="demo-ruleForm">
+          <el-form-item label="当前的用户" prop="username">{{fenpeiForm.username}}</el-form-item>
+          <el-form-item label="分配的角色" prop="rid">
+            <el-select v-model="fenpeiForm.rid" placeholder="请选择">
+              <el-option
+              v-for="item in rolesInfo"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="fenpeiDialogVisible">取 消</el-button>
+          <el-button type="primary"  @click="fenpeiUser()">确 定</el-button>
+        </span>
+      </el-dialog>
       <!-- 用户列表 -->
       <el-table :data="userList" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
-        <el-table-column prop="username" label="用户名" width="180"></el-table-column>
-        <el-table-column prop="mobile" label="手机号码" width="180"></el-table-column>
-        <el-table-column prop="role_name" label="角色" width="180"></el-table-column>
-        <el-table-column prop="email" label="邮编" width="180"></el-table-column>
-        <el-table-column prop="mg_state" label="状态" width="100">
+        <el-table-column type="index" label="序号"></el-table-column>
+        <el-table-column prop="username" label="用户名"></el-table-column>
+        <el-table-column prop="mobile" label="手机号码"></el-table-column>
+        <el-table-column prop="role_name" label="角色"></el-table-column>
+        <el-table-column prop="email" label="邮编"></el-table-column>
+        <el-table-column prop="mg_state" label="状态">
           <template slot-scope="scope">
             <!-- 用户状态开关,插槽实现,row可以帮助获得每条信息 -->
             <el-switch
@@ -108,19 +140,19 @@
             </el-tooltip>
             <el-tooltip placement="top" :enterable="false">
               <div slot="content">分配角色</div>
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="showFenpeiDialog(scope.row.id)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="queryInfo.pagenum"
-      :page-sizes="[2, 5, 10, 15]"
-      :page-size="queryInfo.pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="queryInfo.total">
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[2, 5, 10, 15]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="queryInfo.total">
       </el-pagination>
     </el-card>
   </div>
