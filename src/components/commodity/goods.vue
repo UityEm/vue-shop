@@ -28,9 +28,9 @@
           <el-table-column  fixed  prop="goods_weight"  label="商品重量"></el-table-column>
           <el-table-column  fixed  prop="add_time"  label="创建时间"></el-table-column>
           <el-table-column  fixed="right"  label="操作">
-            <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">编辑</el-button>
+            <template>
+              <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

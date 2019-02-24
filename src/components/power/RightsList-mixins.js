@@ -8,6 +8,7 @@ export default {
     this.getrightsList()
   },
   methods: {
+    // 获取权限列表
     async getrightsList() {
       const {data: res} = await this.$http.get('rights/list')
       // console.log(res.data)
