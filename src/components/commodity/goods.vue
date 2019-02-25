@@ -26,6 +26,7 @@
           <el-table-column  fixed  prop="goods_name"  label="商品名称"></el-table-column>
           <el-table-column  fixed  prop="goods_price"  label="商品价格(元)"></el-table-column>
           <el-table-column  fixed  prop="goods_weight"  label="商品重量"></el-table-column>
+          <!-- 处理时间 -->
           <el-table-column  fixed  prop="add_time"  label="创建时间"></el-table-column>
           <el-table-column  fixed="right"  label="操作">
             <template>
